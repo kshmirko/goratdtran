@@ -4,11 +4,7 @@ package rtcode
 #cgo CFLAGS: -O3
 #cgo LDFLAGS: -L. -lcalc -lmiev0 -lrt3 -L /usr/local/Cellar/gcc/8.2.0/lib/gcc/8/ -lgfortran
 
-void do_calc1(double r0, double r1, int npts, double wl, double mre, double mim,
-                double gamma, double dens,
-                double hpbl, double taua,
-                int numazim, double galbedo,
-                int nmu,  char* out_file);
+#include "rt3v1.h"
 */
 import (
 	"C"
@@ -19,6 +15,7 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"math"
 	"os"
 )
 
@@ -121,4 +118,41 @@ func (v *RT3Params) UnmarshalData() (*ResultData, error) {
 		Ival: &Ival,
 		Qval: &Qval,
 	}, nil
+}
+
+func (v *ResultData) DumpDownwardRadiation(display bool) (tmpMu, tmpI, tmpQ []float64) {
+	nlen := len(*v.Ival)
+	deg2rad := math.Pi / 180.0
+	rad2deg := 1.0 / deg2rad
+	nnlines := nlen / 2
+	tmpMu = make([]float64, nnlines)
+	tmpI = make([]float64, nnlines)
+	tmpQ = make([]float64, nnlines)
+
+	j := 0
+	for i := 0; i < nlen; i++ {
+		mu := (*v.Mu)[i]
+		if mu >= 0 {
+			mu = math.Acos(mu) * math.Cos((*v.Phi)[i]*deg2rad) * rad2deg
+			//fmt.Printf("%12.4f%12.3e%12.3e\n", mu, (*v.Ival)[i], (*v.Qval)[i])
+			tmpMu[j] = mu
+			tmpI[j] = (*v.Ival)[i]
+			tmpQ[j] = (*v.Qval)[i]
+			j++
+		}
+	}
+
+	// Reverse second half of the array
+	for i, j := nnlines/2, nnlines-1; i < j; i, j = i+1, j-1 {
+		tmpMu[i], tmpMu[j] = tmpMu[j], tmpMu[i]
+		tmpI[i], tmpI[j] = tmpI[j], tmpI[i]
+		tmpQ[i], tmpQ[j] = tmpQ[j], tmpQ[i]
+	}
+	//fmt.Println()
+	if display {
+		for i := 0; i < nnlines; i++ {
+			fmt.Printf("%12.4f%12.3e%12.3e\n", tmpMu[i], tmpI[i], tmpQ[i])
+		}
+	}
+	return
 }
