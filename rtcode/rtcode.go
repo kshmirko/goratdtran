@@ -46,6 +46,138 @@ func New() *RT3Params {
 	}
 }
 
+//Геттеры и Сеттеры для параметров
+
+// R0
+func (v *RT3Params) R0() float64 {
+	return v.r0
+}
+
+func (v *RT3Params) SetR0(r0 float64) {
+	v.r0 = r0
+}
+
+// R1
+func (v *RT3Params) R1() float64 {
+	return v.r1
+}
+
+func (v *RT3Params) SetR1(r1 float64) {
+	v.r1 = r1
+}
+
+// npts
+func (v *RT3Params) Npts() int {
+	return v.npts
+}
+
+func (v *RT3Params) SetNpts(npts int) {
+	v.npts = npts
+}
+
+func (v *RT3Params) SetRadiusRange(r0, r1 float64, npts int) {
+	v.r0 = r0
+	v.r1 = r1
+	v.npts = npts
+}
+
+func (v *RT3Params) SetSizeDistrib(r0, r1, gamma float64, npts int) {
+	v.r0 = r0
+	v.r1 = r1
+	v.gamma = gamma
+	v.npts = npts
+}
+
+// Wl
+func (v *RT3Params) Wl() float64 {
+	return v.wl
+}
+
+func (v *RT3Params) SetWl(wl float64) {
+	v.wl = wl
+}
+
+// midx
+func (v *RT3Params) Midx() complex64 {
+	return v.midx
+}
+
+func (v *RT3Params) SetMidx(midx complex64) {
+	v.midx = midx
+}
+
+// gamma
+func (v *RT3Params) Gamma() float64 {
+	return v.gamma
+}
+
+func (v *RT3Params) SetGamma(gamma float64) {
+	v.gamma = gamma
+}
+
+// Dens
+func (v *RT3Params) Dens() float64 {
+	return v.dens
+}
+
+func (v *RT3Params) SetDens(dens float64) {
+	v.dens = dens
+}
+
+// Hpbl
+func (v *RT3Params) Hpbl() float64 {
+	return v.hpbl
+}
+
+func (v *RT3Params) SetHpbl(hpbl float64) {
+	v.hpbl = hpbl
+}
+
+// taua
+func (v *RT3Params) Taua() float64 {
+	return v.taua
+}
+
+func (v *RT3Params) SetTaua(taua float64) {
+	v.taua = taua
+}
+
+// numazim
+func (v *RT3Params) Numazim() int {
+	return v.numazim
+}
+
+func (v *RT3Params) SetNumazim(numazim int) {
+	v.numazim = numazim
+}
+
+// galbedo
+func (v *RT3Params) Galbedo() float64 {
+	return v.galbedo
+}
+
+func (v *RT3Params) SetGalbedo(galbedo float64) {
+	v.galbedo = galbedo
+}
+
+// nmu
+func (v *RT3Params) Nmu() int {
+	return v.nmu
+}
+
+func (v *RT3Params) SetNmu(nmu int) {
+	v.nmu = nmu
+}
+
+// gamma
+func (v *RT3Params) Outfile() string {
+	return v.out_file
+}
+
+func (v *RT3Params) SetOutfile(outf string) {
+	v.out_file = outf
+}
+
 // Выполняе расчет освещенности
 func (v *RT3Params) DoCalc() {
 	outf := C.CString(v.out_file)
