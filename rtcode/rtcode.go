@@ -17,14 +17,15 @@ import (
 	"io"
 	"math"
 	"os"
+	"path/filepath"
 )
 
 // Параметры расчета переноса радиации
 type RT3Params struct {
-	r0, r1, wl, gamma, dens, hpbl, taua, galbedo float64
-	npts, numazim, nmu                           int
-	midx                                         complex64
-	out_file                                     string
+	r0, r1, wl, gamma, dens, hpbl, taua, galbedo, sza float64
+	npts, numazim, nmu, nlays                         int
+	midx                                              complex64
+	out_file                                          string
 }
 
 // Инициализирует структуру и возвращает ссылку на объект
@@ -41,8 +42,9 @@ func New() *RT3Params {
 		taua:     0.1,
 		numazim:  2,
 		galbedo:  0.0,
+		sza:      10.0,
 		nmu:      32,
-		out_file: "rt3.0ut",
+		out_file: "rt3.out",
 	}
 }
 
@@ -160,6 +162,15 @@ func (v *RT3Params) SetGalbedo(galbedo float64) {
 	v.galbedo = galbedo
 }
 
+// Sza
+func (v *RT3Params) Sza() float64 {
+	return v.sza
+}
+
+func (v *RT3Params) SetSza(sza float64) {
+	v.sza = sza
+}
+
 // nmu
 func (v *RT3Params) Nmu() int {
 	return v.nmu
@@ -167,6 +178,14 @@ func (v *RT3Params) Nmu() int {
 
 func (v *RT3Params) SetNmu(nmu int) {
 	v.nmu = nmu
+}
+
+func (v *RT3Params) Nlays() int {
+	return v.nlays
+}
+
+func (v *RT3Params) SetNlays(nlays int) {
+	v.nlays = nlays
 }
 
 // gamma
@@ -193,7 +212,9 @@ func (v *RT3Params) DoCalc() {
 		C.double(v.taua),
 		C.int(v.numazim),
 		C.double(v.galbedo),
+		C.double(v.sza),
 		C.int(v.nmu),
+		C.int(v.nlays),
 		(*C.char)(outf),
 	)
 }
@@ -287,4 +308,19 @@ func (v *ResultData) DumpDownwardRadiation(display bool) (tmpMu, tmpI, tmpQ []fl
 		}
 	}
 	return
+}
+
+// Поиск и удаление всех промежуточных файлов с матрицами рассеяния
+func CleanUp() {
+	//Поиск и удаление всех файов с индикатриссой рассеяния
+	files, err := filepath.Glob(".scat*")
+
+	if err != nil {
+		panic(err)
+	}
+	for _, f := range files {
+		if err := os.Remove(f); err != nil {
+			panic(err)
+		}
+	}
 }
