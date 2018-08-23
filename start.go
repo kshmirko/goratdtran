@@ -78,7 +78,7 @@ func main() {
 				},
 				cli.BoolFlag{
 					Name:  "display",
-					Usage: "Display intensities on the screen",
+					Usage: "Dump intensities to the screen",
 				},
 			},
 		},

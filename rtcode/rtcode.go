@@ -142,9 +142,11 @@ func (v *RT3Params) Taua() float64 {
 
 func (v *RT3Params) SetTaua(taua float64) {
 	v.taua = taua
+
 }
 
 // numazim
+
 func (v *RT3Params) Numazim() int {
 	return v.numazim
 }
@@ -191,6 +193,7 @@ func (v *RT3Params) SetNlays(nlays int) {
 // gamma
 func (v *RT3Params) Outfile() string {
 	return v.out_file
+
 }
 
 func (v *RT3Params) SetOutfile(outf string) {
@@ -198,6 +201,7 @@ func (v *RT3Params) SetOutfile(outf string) {
 }
 
 // Выполняе расчет освещенности
+
 func (v *RT3Params) DoCalc() {
 	outf := C.CString(v.out_file)
 	C.do_calc1(C.double(v.r0),
