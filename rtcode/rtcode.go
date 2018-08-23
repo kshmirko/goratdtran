@@ -2,7 +2,7 @@ package rtcode
 
 /*
 #cgo CFLAGS: -O3
-#cgo LDFLAGS: -L. -lcalc -lmiev0 -lrt3 -L /usr/local/Cellar/gcc/8.2.0/lib/gcc/8/ -lgfortran
+#cgo LDFLAGS: -L. -lradtran -lmiev0 -lrt3 -L /usr/local/Cellar/gcc/8.2.0/lib/gcc/8/ -lgfortran
 
 #include "rt3v1.h"
 */
