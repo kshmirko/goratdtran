@@ -6,6 +6,13 @@ import (
 )
 
 func DoSSRT(ctx *cli.Context) error {
+	fname := ctx.String("fname")
+	sza := ctx.Float64("sza")
+	wl := ctx.Float64("wl")
+
+	p := rtcode.NewSSRT(fname, sza, wl)
+
+	p.Dump()
 	return nil
 }
 
@@ -21,6 +28,7 @@ func DoRT3(ctx *cli.Context) error {
 	galbedo := ctx.Float64("galbedo")
 	display := ctx.Bool("display")
 	nlays := ctx.Int("nlays")
+	aot := ctx.Float64("taua")
 
 	v := rtcode.New()
 	v.SetSizeDistrib(r0, r1, gamma, 101)
@@ -29,6 +37,7 @@ func DoRT3(ctx *cli.Context) error {
 	v.SetMidx(midx)
 	v.SetGalbedo(galbedo)
 	v.SetNlays(nlays)
+	v.SetTaua(aot)
 	v.DoCalc()
 	a, _ := v.UnmarshalData()
 	_, _, _ = a.DumpDownwardRadiation(display)

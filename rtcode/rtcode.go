@@ -23,7 +23,7 @@ import (
 // Параметры расчета переноса радиации
 type RT3Params struct {
 	r0, r1, wl, gamma, dens, hpbl, taua, galbedo, sza float64
-	npts, numazim, nmu, nlays                         int
+	npts, numazim, nmu, nlays, aziorder               int
 	midx                                              complex64
 	out_file                                          string
 }
@@ -38,12 +38,13 @@ func New() *RT3Params {
 		midx:     1.4 - 0.00i,
 		gamma:    -4.0,
 		dens:     300.0,
-		hpbl:     3000.0,
+		hpbl:     3.0,
 		taua:     0.1,
 		numazim:  2,
 		galbedo:  0.0,
 		sza:      10.0,
 		nmu:      32,
+		aziorder: 6,
 		out_file: "rt3.out",
 	}
 }
@@ -219,6 +220,7 @@ func (v *RT3Params) DoCalc() {
 		C.double(v.sza),
 		C.int(v.nmu),
 		C.int(v.nlays),
+		C.int(v.aziorder),
 		(*C.char)(outf),
 	)
 }

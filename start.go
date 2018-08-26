@@ -15,21 +15,33 @@ func main() {
 		cli.Command{
 			Name:     "ssrt",
 			Category: "Радиационный код",
-			Usage:    "Расчет переноса солнечной радиации в приближении однократного расеяния",
-			Action:   actions.DoSSRT,
+			Usage: "Расчет переноса солнечной радиации в приближении" +
+				" однократного расеяния",
+			Action: actions.DoSSRT,
 			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "fname",
+					Usage: "file with matrix",
+					Value: ".allatm_sca",
+				},
 				cli.Float64Flag{
 					Name:  "sza",
 					Usage: "Solar zenith angle",
 					Value: 10.0,
+				},
+				cli.Float64Flag{
+					Name:  "wl",
+					Usage: "Wavelength, um",
+					Value: 0.750,
 				},
 			},
 		},
 		cli.Command{
 			Name:     "rt3",
 			Category: "Радиационный код",
-			Usage:    "Расчет переноса солнечной радиации по модели polradtran, расчет компонент I и Q",
-			Action:   actions.DoRT3,
+			Usage: "Расчет переноса солнечной радиации по модели" +
+				" polradtran, расчет компонент I и Q",
+			Action: actions.DoRT3,
 			Flags: []cli.Flag{
 				cli.Float64Flag{
 					Name:  "sza",
@@ -71,9 +83,15 @@ func main() {
 					Usage: "Ground reflectance",
 					Value: 0.0,
 				},
+				cli.Float64Flag{
+					Name:  "taua",
+					Usage: "Aerosol optical thickness",
+					Value: 0.1,
+				},
 				cli.IntFlag{
-					Name:  "nlays",
-					Usage: "Number of atmosphere layers (each layer 1 km width)",
+					Name: "nlays",
+					Usage: "Number of atmosphere layers " +
+						"(each layer 1 km width)",
 					Value: 40,
 				},
 				cli.BoolFlag{
@@ -83,10 +101,14 @@ func main() {
 			},
 		},
 	}
+	// Вызов программы без параметров выводит справку об ее использовании
 	app.Action = nil
 	app.Version = "0.1"
-	app.Usage = "Программа для расчета нисходящей солнечной радиации в различных атмосферных условиях"
+	app.Usage = "Программа для расчета нисходящей солнечной радиации" +
+		" в различных атмосферных условиях"
+
 	err := app.Run(os.Args)
+	// Если в процессе вызова побпрограмм возникла ошибка, она будет возвращена сюда
 	if err != nil {
 		log.Fatal(err)
 	}

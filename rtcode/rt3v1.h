@@ -5,7 +5,7 @@ void do_calc1(double r0, double r1, int npts, double wl, double mre, double mim,
                 double gamma, double dens, 
                 double hpbl, double taua, 
                 int numazim, double galbedo, double sza,
-                int nmu,  int nlays, char* out_file);
+                int nmu,  int nlays,  int aziorder, char* out_file);
 
 
 #endif
