@@ -42,6 +42,6 @@ func DoRT3(ctx *cli.Context) error {
 	a, _ := v.UnmarshalData()
 	_, _, _ = a.DumpDownwardRadiation(display)
 
-	rtcode.CleanUp()
+	//rtcode.CleanUp()
 	return nil
 }

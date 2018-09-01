@@ -104,7 +104,8 @@ func (v *SSRTData) L0(tau, utheta, uphi float64) float64 {
 	u := utheta
 	ua := u*u0 + math.Sqrt(1.0-u*u)*math.Sqrt(1.0-u0*u0)*uphi
 	F1_i := libmath.Coef2phase(v.P1, ua)
-	return F1_i * math.Exp(-tau/utheta) / utheta
+	_ = F1_i
+	return F1_i * tau * math.Exp(-tau/utheta) / (utheta)
 }
 
 func (v *SSRTData) L1(tau, utheta, uphi float64) float64 {
